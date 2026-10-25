@@ -1,0 +1,268 @@
+{
+  "vertical": "ai_consulting",
+  "display_name": "AI Strategy Consultant",
+  "icp_rubric": {
+    "name": "AI strategy consulting ICP",
+    "dimensions": [
+      {
+        "key": "fit_funding",
+        "label": "Funding stage fit",
+        "weight": 0.25,
+        "scoring": "categorical",
+        "rules": {
+          "seed": 0.4,
+          "series_a": 1.0,
+          "series_b": 0.9,
+          "series_c": 0.5,
+          "bootstrapped": 0.6,
+          "public": 0.1,
+          "growth": 0.4
+        }
+      },
+      {
+        "key": "fit_size",
+        "label": "Team size fit",
+        "weight": 0.15,
+        "scoring": "categorical",
+        "rules": {
+          "1-10": 0.3,
+          "11-50": 1.0,
+          "51-200": 0.9,
+          "201-500": 0.4,
+          "500+": 0.1
+        }
+      },
+      {
+        "key": "fit_role",
+        "label": "Role fit",
+        "weight": 0.20,
+        "scoring": "llm",
+        "prompt_key": "score.role_fit"
+      },
+      {
+        "key": "pain_signal",
+        "label": "Pain signal strength",
+        "weight": 0.25,
+        "scoring": "llm",
+        "prompt_key": "score.pain_signal"
+      },
+      {
+        "key": "fit_geo",
+        "label": "Geo fit",
+        "weight": 0.15,
+        "scoring": "categorical",
+        "rules": {
+          "IN": 1.0,
+          "US": 0.9,
+          "UK": 0.5,
+          "SG": 0.5,
+          "AE": 0.5,
+          "other": 0.2
+        }
+      }
+    ],
+    "tiers": [
+      {"label": "A", "min_score": 0.75, "actions": ["draft_email", "high_priority_followup"]},
+      {"label": "B", "min_score": 0.55, "actions": ["draft_email"]},
+      {"label": "C", "min_score": 0.35, "actions": ["nurture_only"]},
+      {"label": "skip", "min_score": 0.0, "actions": ["skip"]}
+    ]
+  },
+  "prompts": {
+    "score.role_fit": {
+      "purpose": "Score how well the lead's role fits an AI consulting buyer persona.",
+      "model_preference": "fast",
+      "temperature": 0.0,
+      "system": "You score how well a person's role fits the buyer persona for {{SENDER_NAME}}, an AI strategy consulting service. The ideal buyers are founders and senior product/engineering leaders at venture-backed tech companies who have budget authority for AI initiatives. ICs occasionally drive AI adoption decisions and should not score zero by default.",
+      "user_template": "Lead: {first_name} {last_name}\nRole: {role_title}\nCompany: {company_name}\n\nReturn JSON {\"score\": 0.0-1.0, \"reasoning\": one-sentence}.\n\nGuideline scores:\n- 1.0: Founder, CEO, CTO, CPO, VP Engineering, Head of AI/ML\n- 0.8: Co-founder, Director of Engineering / Product at sub-100\n- 0.6: Senior PM, Staff Engineer at sub-100\n- 0.4: IC engineer at sub-20 (potential influencer)\n- 0.2: Mid-level IC at large company; non-technical roles\n- 0.0: Sales, ops, HR, finance",
+      "user_template_vars": ["first_name", "last_name", "role_title", "company_name"],
+      "output_schema": {
+        "type": "object",
+        "properties": {"score": {"type": "number"}, "reasoning": {"type": "string"}},
+        "required": ["score", "reasoning"]
+      }
+    },
+    "score.pain_signal": {
+      "purpose": "Score how strong the AI-related pain signal is for this account.",
+      "model_preference": "fast",
+      "temperature": 0.0,
+      "system": "You score how strong the signal is that a company has active pain or opportunity around AI/ML strategy, hiring, or implementation. Strong signals mean active buying intent or unmet need that {{SENDER_NAME}} could help with.",
+      "user_template": "Company: {company_name}\nIndustry: {industry}\nSize: {employee_count}\nFunding: {funding_stage}\nSignals:\n{signals_json}\n\nReturn JSON {\"score\": 0.0-1.0, \"reasoning\": one-sentence, \"key_signal\": top signal or 'none'}.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"score": {"type": "number"}, "reasoning": {"type": "string"}, "key_signal": {"type": "string"}},
+        "required": ["score", "reasoning", "key_signal"]
+      }
+    },
+    "draft.first_touch.IN": {
+      "purpose": "Cold email opener for India-based leads.",
+      "model_preference": "balanced",
+      "temperature": 0.7,
+      "system": "You write cold outreach emails in the voice of {{SENDER_NAME}}, an AI strategy consultant based in {{SENDER_CITY}}. Founder-to-founder tone, warm but not gushing, specific not generic. Never use: leverage, synergy, supercharge, transformative, unlock, circle back, touch base, game-changer. Use named people, real timelines, honest framing.",
+      "user_template": "Write a first-touch email to:\nName: {first_name} {last_name}\nRole: {role_title} at {company_name}\nCompany summary: {company_summary}\nPain signal: {pain_signal}\n\nConstraints:\n- Subject 4-7 words, no emoji, no all-lowercase\n- Body max 110 words, opens with 'Hi {first_name},'\n- ONE specific reference to their company/work\n- ONE sentence positioning what {{SENDER_NAME}} does\n- ONE low-pressure ask (15-min chat, OK to decline)\n- Close: 'Best,\\n{{SENDER_NAME}}'\n\nReturn JSON {\"subject\", \"body\", \"word_count\"}.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"subject": {"type": "string"}, "body": {"type": "string"}, "word_count": {"type": "integer"}},
+        "required": ["subject", "body", "word_count"]
+      }
+    },
+    "draft.first_touch.US": {
+      "purpose": "Cold email opener for US-based leads.",
+      "model_preference": "balanced",
+      "temperature": 0.7,
+      "system": "You write cold outreach emails in {{SENDER_NAME}}'s voice for US-based recipients. Tighter and more direct than the India version. {{SENDER_NAME}} is based in {{SENDER_CITY}} — that's a feature (cost-effective, global perspective). Don't pretend to be in the US timezone.",
+      "user_template": "Write a first-touch email to:\nName: {first_name} {last_name}\nRole: {role_title} at {company_name}\nCompany summary: {company_summary}\nPain signal: {pain_signal}\n\nConstraints:\n- Subject 3-6 words, no emoji\n- Body max 90 words, opens with 'Hey {first_name},'\n- ONE specific reference to their work\n- ONE sentence positioning {{SENDER_NAME}}\n- ONE low-pressure ask\n- Close: 'Best,\\n{{SENDER_NAME}}'\n\nReturn JSON.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"subject": {"type": "string"}, "body": {"type": "string"}, "word_count": {"type": "integer"}},
+        "required": ["subject", "body", "word_count"]
+      }
+    },
+    "draft.followup_1": {
+      "purpose": "First follow-up after no reply.",
+      "model_preference": "balanced",
+      "temperature": 0.6,
+      "system": "Brief, low-pressure follow-up in {{SENDER_NAME}}'s voice. Follow-ups don't re-pitch — they offer a new angle or an honest exit.",
+      "user_template": "Original (sent {days_ago}d ago):\nSubject: {original_subject}\nBody: {original_body}\n\nGeo: {geo}\n\nConstraints:\n- Subject: 'Re: {original_subject}'\n- Body max 60 words, do NOT re-pitch\n- New angle: insight, news about them, or 'happy to drop this if not relevant'\n- Greeting: 'Hi' for IN, 'Hey' for US\n- Close: 'Best,\\n{{SENDER_NAME}}'\n\nReturn JSON.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"subject": {"type": "string"}, "body": {"type": "string"}, "word_count": {"type": "integer"}},
+        "required": ["subject", "body", "word_count"]
+      }
+    },
+    "draft.linkedin_connect": {
+      "purpose": "300-char LinkedIn connection note.",
+      "model_preference": "fast",
+      "temperature": 0.6,
+      "system": "You write LinkedIn connect notes from {{SENDER_NAME}}, an {{SENDER_TITLE}} based in {{SENDER_CITY}}. Hard limit 300 chars. No pitch, no ask — pure curiosity hook. Reference something specific from their profile.",
+      "user_template": "Lead: {lead_name}, {lead_title} at {account_name} ({account_country})\nSignal: {pain_signal_summary}\n\nReturn JSON {\"note\", \"char_count\"}.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"note": {"type": "string"}, "char_count": {"type": "integer"}},
+        "required": ["note", "char_count"]
+      }
+    },
+    "draft.followup_2": {
+      "purpose": "Final break-up follow-up.",
+      "model_preference": "balanced",
+      "temperature": 0.5,
+      "system": "Final follow-up email for {{SENDER_NAME}}. Max 45 words. Last outreach — acknowledge it naturally, no guilt. New angle: a micro-insight or 1-line case study result relevant to them.",
+      "user_template": "Lead: {lead_name}, {lead_title} at {account_name}\nGeo: {geo}\nPain: {pain_signal_summary}\nPrior subjects: {prior_subjects}\n\nReturn JSON {\"subject\", \"body\", \"word_count\"}.",
+      "output_schema": {
+        "type": "object",
+        "properties": {"subject": {"type": "string"}, "body": {"type": "string"}, "word_count": {"type": "integer"}},
+        "required": ["subject", "body", "word_count"]
+      }
+    },
+    "classify.reply": {
+      "purpose": "Classify intent of inbound reply.",
+      "model_preference": "fast",
+      "temperature": 0.0,
+      "system": "You classify replies to cold outreach with high precision. Be strict — only mark 'meeting_request' if they actually propose meeting or ask to chat. 'positive_vague' is for interest without commitment. 'objection' is for specific reasons no, not for outright rejection.",
+      "user_template": "Original:\nSubject: {original_subject}\nBody: {original_body}\n\nReply:\n{reply_body}\n\nReturn JSON matching the schema.",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "intent": {"type": "string", "enum": ["meeting_request","objection","positive_vague","unsubscribe_or_not_interested","gatekeeper","auto_reply","interested","referral","out_of_office","not_now"]},
+          "confidence": {"type": "number"},
+          "reasoning": {"type": "string"},
+          "suggested_response_type": {"type": "string"},
+          "extracted_entities": {"type": "object"}
+        },
+        "required": ["intent", "confidence", "reasoning", "suggested_response_type"]
+      }
+    },
+    "brief.discovery_call": {
+      "purpose": "One-page briefing for a booked discovery call.",
+      "model_preference": "smart",
+      "temperature": 0.3,
+      "system": "You generate concise discovery-call briefings for {{SENDER_NAME}} before calls with prospective AI consulting clients. Scannable in 90 seconds.",
+      "user_template": "Lead: {lead_name}, {lead_title} at {account_name}\nIndustry: {industry}, Funding: {funding_stage}, Size: {employee_count}\nReply: {reply_body}\nBooked: {booked_time}\n\nReturn JSON.",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "company_background": {"type": "string"},
+          "likely_pain_points": {"type": "array", "items": {"type": "string"}},
+          "qualifying_questions": {"type": "array", "items": {"type": "string"}},
+          "applicable_case_studies": {"type": "array", "items": {"type": "string"}},
+          "red_flags_to_watch": {"type": "array", "items": {"type": "string"}}
+        },
+        "required": ["company_background", "likely_pain_points", "qualifying_questions", "red_flags_to_watch"]
+      }
+    },
+    "analyze.weekly_review": {
+      "purpose": "Weekly outbound performance review.",
+      "model_preference": "smart",
+      "temperature": 0.2,
+      "system": "Outbound pipeline analyst for a solo AI consultant. Be direct, specific, and tied to the data.",
+      "user_template": "Week: {week_start} → {week_end}\nSent: {sent_count}\nBy step: {step_breakdown}\nReplies: {replies_count} ({reply_rate}%)\nIntents: {intent_breakdown}\nBookings: {bookings_count}\nSpend: ${spend}\nLast week: {last_week_data}\n\nReturn JSON.",
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "executive_summary": {"type": "string"},
+          "things_working": {"type": "array", "items": {"type": "string"}},
+          "things_to_fix": {"type": "array", "items": {"type": "string"}},
+          "next_experiment": {"type": "string"}
+        },
+        "required": ["executive_summary", "things_working", "things_to_fix", "next_experiment"]
+      }
+    }
+  },
+  "voice": {
+    "name": "AI Consulting Voice",
+    "founder_persona": {
+      "name": "{{SENDER_NAME}}",
+      "title": "{{SENDER_TITLE}}",
+      "location": "{{SENDER_CITY}}",
+      "elevator": "Helping Series A-B tech companies turn AI from roadmap line to shipped product."
+    },
+    "global": {
+      "tone_descriptors": ["direct", "warm", "specific", "founder-to-founder", "lightly dry"],
+      "sentence_length": "short to medium",
+      "vocabulary_use": ["specific company names", "named people", "real timelines", "honest framing", "questions over statements"],
+      "vocabulary_avoid": ["leverage", "synergy", "supercharge", "transformative", "unlock", "circle back", "touch base", "game-changer", "I hope this email finds you well", "wanted to reach out"]
+    },
+    "geo_overrides": {
+      "IN": {"greeting": "Hi", "warmth_level": "medium-high", "max_first_touch_words": 110, "max_followup_words": 60},
+      "US": {"greeting": "Hey", "warmth_level": "medium", "max_first_touch_words": 90, "max_followup_words": 50}
+    }
+  },
+  "cadence_in": {
+    "name": "India Cadence",
+    "region": "IN",
+    "steps": [
+      {"step": 1, "day_offset": 0, "channel": "email", "purpose": "first_touch", "prompt_key": "draft.first_touch.IN", "require_approval": true},
+      {"step": 2, "day_offset": 3, "channel": "linkedin", "purpose": "connection_request", "prompt_key": "draft.linkedin_connect", "require_approval": true, "skip_if_no_linkedin_url": true},
+      {"step": 3, "day_offset": 7, "channel": "email", "purpose": "followup_1", "prompt_key": "draft.followup_1", "require_approval": true},
+      {"step": 4, "day_offset": 14, "channel": "email", "purpose": "followup_2_break_up", "prompt_key": "draft.followup_2", "require_approval": true}
+    ],
+    "send_window_local_tz": "Asia/Kolkata",
+    "send_windows": {"weekdays": ["mon","tue","wed","thu","fri"], "hours": [[10, 12], [15, 18]]},
+    "festival_blocks": ["diwali_week", "holi_week", "year_end_block"]
+  },
+  "cadence_us": {
+    "name": "US Cadence",
+    "region": "US",
+    "steps": [
+      {"step": 1, "day_offset": 0, "channel": "email", "purpose": "first_touch", "prompt_key": "draft.first_touch.US", "require_approval": true},
+      {"step": 2, "day_offset": 2, "channel": "email", "purpose": "followup_1", "prompt_key": "draft.followup_1", "require_approval": true},
+      {"step": 3, "day_offset": 5, "channel": "linkedin", "purpose": "connection_request", "prompt_key": "draft.linkedin_connect", "require_approval": true, "skip_if_no_linkedin_url": true},
+      {"step": 4, "day_offset": 10, "channel": "email", "purpose": "followup_2_break_up", "prompt_key": "draft.followup_2", "require_approval": true}
+    ],
+    "send_window_local_tz": "America/Los_Angeles",
+    "send_windows": {"weekdays": ["mon","tue","wed","thu"], "hours": [[8, 11]]},
+    "festival_blocks": ["thanksgiving_week", "year_end_block", "july4_week"]
+  },
+  "geo": {
+    "name": "AI Consulting Geo",
+    "primary": ["IN"],
+    "secondary": ["US"],
+    "tertiary": ["UK", "SG", "AE"],
+    "blocked": ["RU", "BY", "IR", "KP", "SY", "CU"],
+    "geo_rules": {
+      "IN": {"prefer_channel_first": "email", "send_window_local_tz": "Asia/Kolkata"},
+      "US": {"prefer_channel_first": "email", "send_window_local_tz": "America/Los_Angeles"},
+      "UK": {"prefer_channel_first": "email", "send_window_local_tz": "Europe/London"}
+    }
+  }
+}

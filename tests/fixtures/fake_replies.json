@@ -1,0 +1,44 @@
+{
+  "replies": [
+    {
+      "id_tag": "meeting_request",
+      "expected_intent": "meeting_request",
+      "lead_geo": "US",
+      "original_subject": "Quick thought on Loomsight + RAG eval",
+      "original_body": "Hey Jordan, saw your MLOps World talk on RAG eval failures...",
+      "reply_body": "Sure, happy to chat. Does Thursday 2pm PT work, or Friday morning?"
+    },
+    {
+      "id_tag": "positive_vague",
+      "expected_intent": "positive_vague",
+      "lead_geo": "IN",
+      "original_subject": "Re your ML infra post",
+      "original_body": "Hi Aditya, your post on shelving the LLM rollout resonated...",
+      "reply_body": "Interesting, thanks for reaching out. Things are pretty hectic right now but I'll keep this in mind."
+    },
+    {
+      "id_tag": "objection",
+      "expected_intent": "objection",
+      "lead_geo": "US",
+      "original_subject": "Re: AI optimization at Routewisp",
+      "original_body": "Hey Marcus, saw the earnings interview...",
+      "reply_body": "We're actually already working with a consultant on this. Maybe revisit next quarter?"
+    },
+    {
+      "id_tag": "unsubscribe",
+      "expected_intent": "unsubscribe_or_not_interested",
+      "lead_geo": "US",
+      "original_subject": "Loomsight + AI strategy",
+      "original_body": "Hey Jordan...",
+      "reply_body": "Please remove me from your list. Not interested in any consulting offers."
+    },
+    {
+      "id_tag": "gatekeeper",
+      "expected_intent": "gatekeeper",
+      "lead_geo": "IN",
+      "original_subject": "Quick question for the CTO",
+      "original_body": "Hi Priya, ...",
+      "reply_body": "Hi, I'm the EA. Please send anything intended for the CTO to ops@ledgerline.example and we'll route it."
+    }
+  ]
+}

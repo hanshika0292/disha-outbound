@@ -1,0 +1,64 @@
+{
+  "name": "AI consulting ICP — demo",
+  "dimensions": [
+    {
+      "key": "fit_funding",
+      "label": "Funding stage fit",
+      "weight": 0.25,
+      "scoring": "categorical",
+      "rules": {
+        "seed": 0.4,
+        "series_a": 1.0,
+        "series_b": 0.9,
+        "series_c": 0.5,
+        "bootstrapped": 0.6
+      }
+    },
+    {
+      "key": "fit_size",
+      "label": "Team size fit",
+      "weight": 0.15,
+      "scoring": "categorical",
+      "rules": {
+        "1-10": 0.3,
+        "11-50": 1.0,
+        "51-200": 0.9,
+        "201-500": 0.4,
+        "500+": 0.1
+      }
+    },
+    {
+      "key": "fit_role",
+      "label": "Role fit",
+      "weight": 0.20,
+      "scoring": "llm",
+      "prompt_key": "score.role_fit"
+    },
+    {
+      "key": "pain_signal",
+      "label": "Pain signal strength",
+      "weight": 0.25,
+      "scoring": "llm",
+      "prompt_key": "score.pain_signal"
+    },
+    {
+      "key": "fit_geo",
+      "label": "Geo fit",
+      "weight": 0.15,
+      "scoring": "categorical",
+      "rules": {
+        "IN": 1.0,
+        "US": 0.9,
+        "UK": 0.5,
+        "SG": 0.5,
+        "other": 0.2
+      }
+    }
+  ],
+  "tiers": [
+    {"label": "A", "min_score": 0.75, "actions": ["draft_email", "high_priority_followup"]},
+    {"label": "B", "min_score": 0.55, "actions": ["draft_email"]},
+    {"label": "C", "min_score": 0.35, "actions": ["nurture_only"]},
+    {"label": "skip", "min_score": 0.0, "actions": ["skip"]}
+  ]
+}

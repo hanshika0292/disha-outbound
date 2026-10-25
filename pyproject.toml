@@ -1,0 +1,88 @@
+[project]
+name = "disha"
+version = "0.1.0"
+description = "Multi-tenant SaaS for solo consultants automating outbound."
+requires-python = ">=3.11"
+readme = "README.md"
+dependencies = [
+    "sqlalchemy[asyncio]>=2.0.30",
+    "asyncpg>=0.29.0",
+    "alembic>=1.13.0",
+    "pydantic[email]>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "typer>=0.12.0",
+    "rich>=13.7.0",
+    "cryptography>=42.0.0",
+    "python-ulid>=2.7.0",
+    "orjson>=3.10.0",
+    "google-genai>=1.0.0",
+    "anthropic>=0.40.0",
+    "openai>=1.50.0",
+    "tenacity>=9.0.0",
+    "google-auth>=2.27.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-api-python-client>=2.120.0",
+    "tzdata>=2024.1",
+    "notion-client>=2.2.0",
+    "fastapi>=0.111.0",
+    "uvicorn[standard]>=0.30.0",
+    "python-multipart>=0.0.9",
+]
+
+[project.scripts]
+disha = "disha.cli:app"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.2.0",
+    "pytest-asyncio>=0.23.0",
+    "ruff>=0.5.0",
+    "mypy>=1.10.0",
+    "httpx>=0.27.0",
+    "anyio>=4.3.0",
+]
+
+[tool.uv]
+package = true
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/disha"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "N", "ASYNC", "S", "RUF"]
+ignore = ["S101", "S608"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S105", "S106"]
+"alembic/*" = ["E501"]
+"src/disha/cli.py" = ["B008"]
+"src/disha/api/**/*.py" = ["B008"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/disha"]
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["alembic.*"]
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = ["googleapiclient.*", "google_auth_oauthlib.*", "google.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+filterwarnings = ["ignore::DeprecationWarning"]

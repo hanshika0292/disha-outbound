@@ -1,0 +1,56 @@
+{
+  "name": "Demo India Cadence",
+  "version": 1,
+  "region": "IN",
+  "geo": "IN",
+  "steps": [
+    {
+      "step": 1,
+      "day_offset": 0,
+      "channel": "email",
+      "purpose": "first_touch",
+      "prompt_key": "draft.first_touch.IN",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    },
+    {
+      "step": 2,
+      "day_offset": 3,
+      "channel": "linkedin",
+      "purpose": "connection_request",
+      "prompt_key": "draft.linkedin_connect",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"],
+      "skip_if_no_linkedin_url": true
+    },
+    {
+      "step": 3,
+      "day_offset": 7,
+      "channel": "email",
+      "purpose": "followup_1",
+      "prompt_key": "draft.followup_1",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    },
+    {
+      "step": 4,
+      "day_offset": 14,
+      "channel": "email",
+      "purpose": "followup_2_break_up",
+      "prompt_key": "draft.followup_2",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    }
+  ],
+  "stop_conditions": [
+    "lead_state in (replied, booked, won, lost, rejected, unsubscribed)",
+    "max_touches_reached",
+    "manual_pause"
+  ],
+  "send_window_local_tz": "Asia/Kolkata",
+  "send_windows": {
+    "weekdays": ["mon", "tue", "wed", "thu", "fri"],
+    "hours": [[10, 12], [15, 18]]
+  },
+  "festival_blocks": ["diwali_week", "holi_week", "year_end_block_dec25_jan1"]
+}

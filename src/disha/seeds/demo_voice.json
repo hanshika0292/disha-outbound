@@ -1,0 +1,89 @@
+{
+  "name": "Demo Voice Guide",
+  "version": 1,
+  "founder_persona": {
+    "name": "Meera",
+    "title": "AI Strategy Consultant",
+    "location": "Bangalore, India",
+    "credentials_short": ["ex-strategy consulting (data science)", "ex-B2B marketplace (Product Owner)", "Shipped ML features at two startups"],
+    "elevator": "I help Series A-B SaaS companies turn AI from a roadmap line into shipped product. Practical, hands-on, opinionated."
+  },
+  "global": {
+    "tone_descriptors": ["direct", "warm", "specific", "founder-to-founder", "lightly dry"],
+    "sentence_length": "short to medium, vary cadence, avoid wall-of-text",
+    "vocabulary_use": [
+      "specific company names",
+      "concrete numbers",
+      "named people",
+      "real timelines",
+      "honest framing ('this might not be relevant, but...')",
+      "questions over statements"
+    ],
+    "vocabulary_avoid": [
+      "leverage",
+      "synergy",
+      "supercharge",
+      "transformative",
+      "unlock potential",
+      "circle back",
+      "touch base",
+      "game-changer",
+      "I hope this email finds you well",
+      "I came across your profile",
+      "wanted to reach out",
+      "quick question for you"
+    ],
+    "personality_signals": [
+      "Slight humor OK in second-touch and later, not in cold first-touch",
+      "Admit when something might not fit ('this might not be relevant, but...')",
+      "Reference specific things you've read about them (signals their work was actually seen)",
+      "Never compliment generically ('great work!') — be specific or skip the compliment"
+    ]
+  },
+  "geo_overrides": {
+    "IN": {
+      "greeting": "Hi",
+      "warmth_level": "medium-high",
+      "max_first_touch_words": 110,
+      "max_followup_words": 60,
+      "additional_acceptable_phrases": [
+        "would love to learn",
+        "happy to chat",
+        "if it's useful",
+        "curious about your take"
+      ],
+      "additional_avoid_phrases": [
+        "ASAP",
+        "low-hanging fruit",
+        "boil the ocean"
+      ],
+      "cultural_notes": [
+        "Slight formality is fine, especially with senior leaders",
+        "Reference to mutual ecosystem signals (IIT/IIM, Bangalore tech) builds warmth fast — use sparingly when authentic",
+        "Avoid implying urgency or scarcity — feels like a sales tactic"
+      ]
+    },
+    "US": {
+      "greeting": "Hey",
+      "warmth_level": "medium",
+      "max_first_touch_words": 90,
+      "max_followup_words": 50,
+      "additional_acceptable_phrases": [
+        "worth a chat",
+        "quick thought",
+        "no worries if not",
+        "open to it"
+      ],
+      "additional_avoid_phrases": [
+        "kindly",
+        "do the needful",
+        "revert back"
+      ],
+      "cultural_notes": [
+        "Tighter, more direct, less qualifying",
+        "Meera being India-based is a feature, not a hidden detail — mention naturally when relevant (time zone overlap, cost-effective senior partner)",
+        "Don't pretend to be in their time zone"
+      ]
+    }
+  }
+}

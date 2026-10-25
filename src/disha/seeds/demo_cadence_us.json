@@ -1,0 +1,56 @@
+{
+  "name": "Demo US Cadence",
+  "version": 1,
+  "region": "US",
+  "geo": "US",
+  "steps": [
+    {
+      "step": 1,
+      "day_offset": 0,
+      "channel": "email",
+      "purpose": "first_touch",
+      "prompt_key": "draft.first_touch.US",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    },
+    {
+      "step": 2,
+      "day_offset": 2,
+      "channel": "email",
+      "purpose": "followup_1",
+      "prompt_key": "draft.followup_1",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    },
+    {
+      "step": 3,
+      "day_offset": 5,
+      "channel": "linkedin",
+      "purpose": "connection_request",
+      "prompt_key": "draft.linkedin_connect",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"],
+      "skip_if_no_linkedin_url": true
+    },
+    {
+      "step": 4,
+      "day_offset": 10,
+      "channel": "email",
+      "purpose": "followup_2_break_up",
+      "prompt_key": "draft.followup_2",
+      "require_approval": true,
+      "skip_if_state_in": ["replied", "booked", "won", "lost", "rejected"]
+    }
+  ],
+  "stop_conditions": [
+    "lead_state in (replied, booked, won, lost, rejected, unsubscribed)",
+    "max_touches_reached",
+    "manual_pause"
+  ],
+  "send_window_local_tz": "America/Los_Angeles",
+  "send_windows": {
+    "weekdays": ["mon", "tue", "wed", "thu"],
+    "hours": [[8, 11]]
+  },
+  "festival_blocks": ["thanksgiving_week", "year_end_block_dec22_jan2", "july4_week"]
+}

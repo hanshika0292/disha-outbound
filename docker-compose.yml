@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: disha-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-disha}
+      DISHA_ADMIN_PASSWORD: ${DISHA_ADMIN_PASSWORD:-disha_admin_dev}
+      DISHA_APP_PASSWORD: ${DISHA_APP_PASSWORD:-disha_app_dev}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-disha}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:

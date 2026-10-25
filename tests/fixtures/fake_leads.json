@@ -1,0 +1,196 @@
+{
+  "leads": [
+    {
+      "id_tag": "A_IN_founder",
+      "expected_tier": "A",
+      "geo": "IN",
+      "first_name": "Aditya",
+      "last_name": "Rao",
+      "role_title": "Co-founder & CTO",
+      "seniority": "founder",
+      "account": {
+        "domain": "quillfern.example",
+        "name": "Quillfern",
+        "industry": "B2B SaaS",
+        "employee_count": 28,
+        "funding_stage": "series_a",
+        "hq_country": "IN",
+        "hq_city": "Bangalore"
+      },
+      "raw": {
+        "pain_signal": "Posted on LinkedIn about ML infra challenges; hiring a Head of AI/ML in last 30 days",
+        "public_activity": "Wrote a blog post titled 'why we shelved our LLM rollout'",
+        "signals": [
+          {"type": "job_post", "title": "Head of AI/ML", "days_ago": 14},
+          {"type": "linkedin_post", "text": "Our LLM rollout taught us...", "days_ago": 8}
+        ]
+      }
+    },
+    {
+      "id_tag": "A_US_vpe",
+      "expected_tier": "A",
+      "geo": "US",
+      "first_name": "Jordan",
+      "last_name": "Chen",
+      "role_title": "VP Engineering",
+      "seniority": "executive",
+      "account": {
+        "domain": "loomsight.example",
+        "name": "Loomsight",
+        "industry": "Observability",
+        "employee_count": 42,
+        "funding_stage": "series_a",
+        "hq_country": "US",
+        "hq_city": "San Francisco"
+      },
+      "raw": {
+        "pain_signal": "Two open AI/ML IC roles, Series A funding announcement cited AI as primary use of proceeds",
+        "public_activity": "Spoke at MLOps World; recent talk on RAG eval failures",
+        "signals": [
+          {"type": "funding", "stage": "series_a", "amount_usd": 18000000, "days_ago": 45},
+          {"type": "job_post", "title": "Senior ML Engineer", "days_ago": 21}
+        ]
+      }
+    },
+    {
+      "id_tag": "B_IN_seniorpm",
+      "expected_tier": "B",
+      "geo": "IN",
+      "first_name": "Priya",
+      "last_name": "Subramanian",
+      "role_title": "Senior Product Manager",
+      "seniority": "senior",
+      "account": {
+        "domain": "ledgerline.example",
+        "name": "Ledgerline",
+        "industry": "Fintech",
+        "employee_count": 80,
+        "funding_stage": "series_b",
+        "hq_country": "IN",
+        "hq_city": "Mumbai"
+      },
+      "raw": {
+        "pain_signal": "Vague mentions of AI in recent product launch; no AI-specific hires yet",
+        "public_activity": "Reshared a thread about LLM evals",
+        "signals": []
+      }
+    },
+    {
+      "id_tag": "B_US_director",
+      "expected_tier": "B",
+      "geo": "US",
+      "first_name": "Marcus",
+      "last_name": "Brennan",
+      "role_title": "Director of Product",
+      "seniority": "senior",
+      "account": {
+        "domain": "routewisp.example",
+        "name": "Routewisp",
+        "industry": "Logistics SaaS",
+        "employee_count": 65,
+        "funding_stage": "series_b",
+        "hq_country": "US",
+        "hq_city": "Boston"
+      },
+      "raw": {
+        "pain_signal": "One AI/ML job posting; founder mentioned 'AI optimization' in a recent earnings interview",
+        "public_activity": "Recent podcast appearance",
+        "signals": [
+          {"type": "job_post", "title": "ML Engineer", "days_ago": 60}
+        ]
+      }
+    },
+    {
+      "id_tag": "C_IN_ic_eng",
+      "expected_tier": "C",
+      "geo": "IN",
+      "first_name": "Rohit",
+      "last_name": "Pillai",
+      "role_title": "Senior Software Engineer",
+      "seniority": "ic",
+      "account": {
+        "domain": "questabuild.example",
+        "name": "QuestaBuild",
+        "industry": "Devtools",
+        "employee_count": 18,
+        "funding_stage": "seed",
+        "hq_country": "IN",
+        "hq_city": "Pune"
+      },
+      "raw": {
+        "pain_signal": "No active AI hires; technical company in AI-relevant space",
+        "public_activity": "none observed",
+        "signals": []
+      }
+    },
+    {
+      "id_tag": "C_US_marketing",
+      "expected_tier": "C",
+      "geo": "US",
+      "first_name": "Erin",
+      "last_name": "Walsh",
+      "role_title": "Head of Marketing",
+      "seniority": "executive",
+      "account": {
+        "domain": "stackpace.example",
+        "name": "Stackpace",
+        "industry": "Developer Tools",
+        "employee_count": 350,
+        "funding_stage": "series_c",
+        "hq_country": "US",
+        "hq_city": "Austin"
+      },
+      "raw": {
+        "pain_signal": "No technical AI signals; marketing-focused role weakens fit",
+        "public_activity": "Marketing-focused content only",
+        "signals": []
+      }
+    },
+    {
+      "id_tag": "skip_enterprise",
+      "expected_tier": "skip",
+      "geo": "US",
+      "first_name": "Patricia",
+      "last_name": "Gomez",
+      "role_title": "Senior Manager, Analytics",
+      "seniority": "mid",
+      "account": {
+        "domain": "megacorpglobal.example",
+        "name": "MegaCorp Global",
+        "industry": "Insurance",
+        "employee_count": 12000,
+        "funding_stage": "public",
+        "hq_country": "US",
+        "hq_city": "New York"
+      },
+      "raw": {
+        "pain_signal": "Enterprise; likely has internal AI team already; we'd be redundant",
+        "public_activity": "Corporate communications only",
+        "signals": []
+      }
+    },
+    {
+      "id_tag": "skip_blocked_geo",
+      "expected_tier": "skip",
+      "geo": "RU",
+      "first_name": "Ivan",
+      "last_name": "Kuznetsov",
+      "role_title": "CTO",
+      "seniority": "founder",
+      "account": {
+        "domain": "novatech.example",
+        "name": "NovaTech",
+        "industry": "B2B SaaS",
+        "employee_count": 30,
+        "funding_stage": "series_a",
+        "hq_country": "RU",
+        "hq_city": "Moscow"
+      },
+      "raw": {
+        "pain_signal": "Strong founder/role signal but blocked geo",
+        "public_activity": "Active on LinkedIn",
+        "signals": []
+      }
+    }
+  ]
+}

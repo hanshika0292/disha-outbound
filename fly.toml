@@ -1,0 +1,45 @@
+# Fly.io configuration for the Disha API.
+# Replace "your-disha-app" with your own Fly app name (it must be unique on Fly).
+app = "your-disha-app"
+primary_region = "sin"   # Singapore — closest to IN/SG users; change to "bom" when available
+
+[build]
+  dockerfile = "Dockerfile.prod"
+
+[env]
+  DISHA_ENV      = "production"
+  DISHA_LOG_FMT  = "json"
+  DISHA_HOST     = "0.0.0.0"
+  DISHA_PORT     = "8000"
+  DISHA_WORKERS  = "2"
+  DISHA_API_URL  = "https://your-disha-app.fly.dev"
+  DISHA_UI_URL   = "https://your-disha-ui.vercel.app"
+
+# Two process groups: the API server and the background worker (sequence
+# ticks + Gmail reply polling). Each gets its own machine.
+[processes]
+  app    = "disha server --host 0.0.0.0 --port 8000"
+  worker = "disha worker"
+
+[http_service]
+  internal_port        = 8000
+  force_https          = true
+  # Keep the machine always warm — a console hit intermittently shouldn't
+  # pay a cold-start penalty (and trip the UI's offline banner).
+  auto_stop_machines   = "off"
+  auto_start_machines  = true
+  min_machines_running = 1
+  processes            = ["app"]
+
+  [http_service.concurrency]
+    type       = "requests"
+    hard_limit = 200
+    soft_limit = 150
+
+[[vm]]
+  size   = "shared-cpu-1x"
+  memory = "512mb"
+
+# Release command: run migrations before the new version takes traffic.
+[deploy]
+  release_command = "/app/.venv/bin/python /app/scripts/fly_init_db.py"

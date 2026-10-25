@@ -1,0 +1,50 @@
+# Environment files (keep only the templates)
+.env*
+!.env.example
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# Virtualenvs
+.venv/
+venv/
+env/
+
+# Tool caches and coverage
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local databases and dumps
+*.db
+*.sqlite
+*.sqlite3
+*.dump
+pgdata/
+
+# Editors / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Deploy tooling state
+.vercel
+.fly/
+
+# Node / Next.js (ui/)
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+
+# Local agent/session notes (next dev regenerates ui/AGENTS.md)
+.claude/
+AGENTS.md
+CLAUDE.md

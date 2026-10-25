@@ -1,0 +1,108 @@
+{
+  "rules": [
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Aditya"},
+      "response": {"content": {"score": 1.0, "reasoning": "Co-founder & CTO at small Series A SaaS — top of persona."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Jordan"},
+      "response": {"content": {"score": 1.0, "reasoning": "VP Engineering at sub-50 Series A — clear decision authority."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Priya"},
+      "response": {"content": {"score": 0.6, "reasoning": "Senior PM at sub-100 — influence but not budget owner."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Marcus"},
+      "response": {"content": {"score": 0.6, "reasoning": "Director of Product at sub-100 — influence-level."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Rohit"},
+      "response": {"content": {"score": 0.4, "reasoning": "IC engineer at sub-20 seed — potential influencer at best."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Erin"},
+      "response": {"content": {"score": 0.2, "reasoning": "Marketing role — outside buyer persona."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Patricia"},
+      "response": {"content": {"score": 0.2, "reasoning": "Mid-level analytics role at 12k-person enterprise."}, "tokens_in": 80, "tokens_out": 30}
+    },
+    {
+      "match": {"purpose": "score.role_fit", "user_contains": "Ivan"},
+      "response": {"content": {"score": 1.0, "reasoning": "CTO at small Series A — strong role fit."}, "tokens_in": 80, "tokens_out": 30}
+    },
+
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "Quillfern"},
+      "response": {"content": {"score": 0.95, "reasoning": "Active Head of AI/ML hire + public post on shelved LLM rollout.", "key_signal": "Hiring Head of AI/ML"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "Loomsight"},
+      "response": {"content": {"score": 0.85, "reasoning": "Series A AI-named raise + two active ML IC roles.", "key_signal": "Series A use of proceeds = AI"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "Ledgerline"},
+      "response": {"content": {"score": 0.4, "reasoning": "Vague AI mentions but no hiring signal.", "key_signal": "vague product mention"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "Routewisp"},
+      "response": {"content": {"score": 0.5, "reasoning": "One ML job + founder mention; moderate.", "key_signal": "ML Engineer job post"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "QuestaBuild"},
+      "response": {"content": {"score": 0.25, "reasoning": "Technical company in AI-relevant space but no active signals.", "key_signal": "none"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "Stackpace"},
+      "response": {"content": {"score": 0.2, "reasoning": "No technical AI signals.", "key_signal": "none"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "MegaCorp"},
+      "response": {"content": {"score": 0.05, "reasoning": "12k-person enterprise; we'd be redundant.", "key_signal": "company too large"}, "tokens_in": 120, "tokens_out": 40}
+    },
+    {
+      "match": {"purpose": "score.pain_signal", "user_contains": "NovaTech"},
+      "response": {"content": {"score": 0.7, "reasoning": "Real signals but geo blocks this lead anyway.", "key_signal": "founder activity"}, "tokens_in": 120, "tokens_out": 40}
+    },
+
+    {
+      "match": {"purpose": "draft.first_touch.IN", "user_contains": "Aditya"},
+      "response": {"content": {"subject": "Your post on shelving the LLM rollout", "body": "Hi Aditya,\n\nYour post on shelving the LLM rollout caught me — the honest framing of what didn't work is rare. I help Series A B2B SaaS teams turn AI from roadmap line to shipped product; not pitching, just curious if a 15-min chat next week would be useful given the Head of AI/ML hire you're running.\n\nNo worries if not.\n\nBest,\nMeera", "word_count": 70}, "tokens_in": 280, "tokens_out": 130}
+    },
+    {
+      "match": {"purpose": "draft.first_touch.US", "user_contains": "Jordan"},
+      "response": {"content": {"subject": "RAG eval at Loomsight", "body": "Hey Jordan,\n\nYour MLOps World talk on RAG eval failures was the clearest write-up I've seen on that pattern. I work with Series A teams shipping AI features end-to-end — Bangalore-based, time-zone overlap on your morning. Worth a chat about the new ML roles you're filling, or no worries if not.\n\nBest,\nMeera", "word_count": 60}, "tokens_in": 280, "tokens_out": 120}
+    },
+
+    {
+      "match": {"purpose": "classify.reply", "user_contains": "Thursday 2pm PT"},
+      "response": {"content": {"intent": "meeting_request", "confidence": 0.98, "reasoning": "Proposes two specific time slots.", "suggested_response_type": "schedule_meeting", "extracted_entities": {"preferred_times": ["Thursday 2pm PT", "Friday morning"]}}, "tokens_in": 200, "tokens_out": 60}
+    },
+    {
+      "match": {"purpose": "classify.reply", "user_contains": "pretty hectic right now"},
+      "response": {"content": {"intent": "positive_vague", "confidence": 0.8, "reasoning": "Polite but non-committal.", "suggested_response_type": "qualify_further", "extracted_entities": {}}, "tokens_in": 200, "tokens_out": 60}
+    },
+    {
+      "match": {"purpose": "classify.reply", "user_contains": "already working with a consultant"},
+      "response": {"content": {"intent": "objection", "confidence": 0.92, "reasoning": "Specific reason — existing consultant.", "suggested_response_type": "answer_objection", "extracted_entities": {"objection_type": "existing_vendor"}}, "tokens_in": 200, "tokens_out": 60}
+    },
+    {
+      "match": {"purpose": "classify.reply", "user_contains": "Please remove me"},
+      "response": {"content": {"intent": "unsubscribe_or_not_interested", "confidence": 0.99, "reasoning": "Explicit unsubscribe request.", "suggested_response_type": "acknowledge_and_close", "extracted_entities": {}}, "tokens_in": 200, "tokens_out": 60}
+    },
+    {
+      "match": {"purpose": "classify.reply", "user_contains": "I'm the EA"},
+      "response": {"content": {"intent": "gatekeeper", "confidence": 0.95, "reasoning": "Executive assistant routing the message.", "suggested_response_type": "route_to_correct_person", "extracted_entities": {"alternative_contact": "ops@ledgerline.example"}}, "tokens_in": 200, "tokens_out": 60}
+    },
+
+    {
+      "match": {"purpose": "draft.linkedin_connect"},
+      "response": {"content": {"note": "Saw your work on AI-led GTM — the Series A timing here is interesting. What's driving the push into enterprise? Would value connecting.", "char_count": 138}, "tokens_in": 160, "tokens_out": 50}
+    },
+    {
+      "match": {"purpose": "draft.followup_2"},
+      "response": {"content": {"subject": "One data point", "body": "Hi there — last note from me. We've helped a Series A team cut LLM eval iteration time from days to hours. If that shape of problem is on your roadmap, happy to share the playbook.", "word_count": 39}, "tokens_in": 220, "tokens_out": 80}
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: always
+    volumes:
+      - pg_data_prod:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    environment:
+      POSTGRES_DB: disha_prod
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD required}
+      DISHA_ADMIN_PASSWORD: ${ADMIN_PASSWORD:?ADMIN_PASSWORD required}
+      DISHA_APP_PASSWORD: ${APP_PASSWORD:?APP_PASSWORD required}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d disha_prod"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL_ADMIN: postgresql+asyncpg://disha_admin:${ADMIN_PASSWORD}@db:5432/disha_prod
+      DATABASE_URL_APP: postgresql+asyncpg://disha_app:${APP_PASSWORD}@db:5432/disha_prod
+      DISHA_FERNET_KEY: ${DISHA_FERNET_KEY:?DISHA_FERNET_KEY required}
+      DISHA_ENV: production
+      DISHA_LOG_FMT: json
+    # Same idempotent init the Fly release_command runs (create_all + RLS + stamp).
+    command: ["python", "scripts/fly_init_db.py"]
+    restart: "no"
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    environment:
+      DATABASE_URL_ADMIN: postgresql+asyncpg://disha_admin:${ADMIN_PASSWORD}@db:5432/disha_prod
+      DATABASE_URL_APP: postgresql+asyncpg://disha_app:${APP_PASSWORD}@db:5432/disha_prod
+      DISHA_FERNET_KEY: ${DISHA_FERNET_KEY}
+      DISHA_ENV: production
+      DISHA_LOG_FMT: json
+      DISHA_LOG_LEVEL: ${DISHA_LOG_LEVEL:-INFO}
+      DISHA_HOST: "0.0.0.0"
+      DISHA_PORT: "8000"
+      DISHA_WORKERS: ${DISHA_WORKERS:-2}
+      DISHA_ALLOWED_ORIGINS: ${DISHA_ALLOWED_ORIGINS:-*}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      DISHA_UI_TOKEN: ${DISHA_UI_TOKEN:?DISHA_UI_TOKEN required}
+      GMAIL_CLIENT_ID: ${GMAIL_CLIENT_ID:-}
+      GMAIL_CLIENT_SECRET: ${GMAIL_CLIENT_SECRET:-}
+    ports:
+      - "${DISHA_PUBLIC_PORT:-8000}:8000"
+
+  ui:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_BASE: ${NEXT_PUBLIC_API_BASE:?NEXT_PUBLIC_API_BASE required}
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - "${UI_PUBLIC_PORT:-3000}:3000"
+
+volumes:
+  pg_data_prod:

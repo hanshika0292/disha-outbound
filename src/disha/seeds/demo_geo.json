@@ -1,0 +1,26 @@
+{
+  "name": "Demo Geo Profile",
+  "version": 1,
+  "primary": ["IN"],
+  "secondary": ["US"],
+  "tertiary": ["UK", "SG", "AE"],
+  "blocked": ["RU", "BY", "IR", "KP", "SY", "CU"],
+  "geo_rules": {
+    "IN": {
+      "cadence_id": "demo_cadence_in_v1",
+      "prefer_channel_first": "email",
+      "send_window_local_tz": "Asia/Kolkata"
+    },
+    "US": {
+      "cadence_id": "demo_cadence_us_v1",
+      "prefer_channel_first": "email",
+      "send_window_local_tz": "America/Los_Angeles"
+    },
+    "UK": {
+      "cadence_id": "demo_cadence_us_v1",
+      "prefer_channel_first": "email",
+      "send_window_local_tz": "Europe/London"
+    }
+  },
+  "fallback_rule": "if lead country not in primary/secondary/tertiary, set state=sourced but tier=skip with reason='geo_out_of_scope'"
+}

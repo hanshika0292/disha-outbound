@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ─── Disha · Modern SaaS palette ──────────────────────────────────────────
+   Linear-inspired: cool whites, indigo accent, slate text, soft shadows,
+   8px radii, airy spacing. Geist for everything.
+
+   Token names are kept stable (terracotta = accent, cream = app bg, etc.)
+   so every component re-skins automatically from these values.
+   ────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  --cream: #f8fafc;          /* app background  */
+  --paper: #ffffff;          /* surfaces        */
+  --ink: #0f172a;            /* primary text    */
+  --muted: #64748b;          /* secondary text  */
+  --border: #e9edf2;         /* hairline border */
+  --border-strong: #cbd5e1;  /* stronger border */
+
+  /* Accent: graphite monochrome — primary actions are near-black, the most
+     restrained professional read. Status colors below stay semantic. */
+  --terracotta: #18181b;
+  --terracotta-soft: #71717a;
+  --terracotta-wash: #f4f4f5;
+
+  /* Positive (emerald) */
+  --green: #059669;
+  --green-soft: #34d399;
+  --green-wash: #d1fae5;
+
+  /* Warning (amber) */
+  --warning: #d97706;
+  --warning-wash: #fef3c7;
+
+  /* Lead tiers */
+  --tier-a: #059669;
+  --tier-b: #475569;
+  --tier-c: #d97706;
+  --tier-d: #94a3b8;
+
+  /* Restrained shadows: one working level + one for overlays. No glows. */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 1px 3px rgba(15, 23, 42, 0.07);
+  --shadow-lg: 0 8px 24px rgba(15, 23, 42, 0.12);
+  --shadow-accent: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+@theme inline {
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-terracotta-wash: var(--terracotta-wash);
+  --color-green: var(--green);
+  --color-green-soft: var(--green-soft);
+  --color-green-wash: var(--green-wash);
+  --color-warning: var(--warning);
+  --color-warning-wash: var(--warning-wash);
+
+  --color-tier-a: var(--tier-a);
+  --color-tier-b: var(--tier-b);
+  --color-tier-c: var(--tier-c);
+  --color-tier-d: var(--tier-d);
+
+  /* All three map to Geist — display is just heavier weight */
+  --font-serif: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Tight professional radii */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 6px;
+  --radius-xl: 8px;
+  --radius-2xl: 8px;
+}
+
+@layer base {
+  html, body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Headings: bold geometric sans, tight tracking — no more serif italic */
+  h1, h2, h3, .display {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  /* Color-only transitions — no animated transforms/shadows (reads as toy-like). */
+  * {
+    transition-property: color, background-color, border-color, opacity;
+    transition-duration: 100ms;
+    transition-timing-function: ease;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+
+  ::selection {
+    background: var(--terracotta-wash);
+    color: var(--terracotta);
+  }
+
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-strong) transparent;
+  }
+}
+
+@layer utilities {
+  /* Display = bold sans, tight tracking (replaces serif-italic) */
+  .text-display {
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .text-mono { font-family: var(--font-mono); font-feature-settings: "tnum"; }
+
+  .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 3px;
+  }
+  .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+
+  /* Shadow utilities */
+  .shadow-xs { box-shadow: var(--shadow-xs); }
+  .shadow-card { box-shadow: var(--shadow-sm); }
+  .shadow-soft { box-shadow: var(--shadow-md); }
+  .shadow-pop { box-shadow: var(--shadow-lg); }
+  .shadow-accent { box-shadow: var(--shadow-accent); }
+
+  .ring-focus { box-shadow: 0 0 0 3px var(--terracotta-wash); }
+
+  /* Flat accent surfaces — gradients retired for a professional read. */
+  .text-gradient { color: var(--terracotta); }
+  .bg-accent-gradient { background: var(--terracotta); }
+  .bg-grid { background: transparent; }
+
+  /* Motion: a single quiet fade. No slides, no shakes. */
+  .page-enter { animation: fadeIn 0.15s ease forwards; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .animate-shake { /* retired — errors are shown in text, not motion */ }
+
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+}
